@@ -1,7 +1,7 @@
 var base58 = require('./crypto/base58');
 var cryptoUtils = require('./crypto/utils');
 var currencies = require('./currencies');
-
+var bitcoincashjs = require('../node_modules/bitcoincashjs/dist/bitcoincash-0.1.10.min.js');
 var DEFAULT_CURRENCY_NAME = 'bitcoin';
 var DEFAULT_NETWORK_TYPE = 'prod';
 
@@ -56,6 +56,10 @@ function validate(address, currencyNameOrSymbol, networkType) {
 
     var currency = currencies.getByNameOrSymbol(currencyNameOrSymbol);
 
+    if (currency.symbol=='bch') {
+        // console.log("bch",bitcoincashjs.Address.isValid(address, networkType));
+        return bitcoincashjs.Address.isValid(address, networkType);
+    }
     if (currency.validator) {
         return currency.validator.isValidAddress(address);
     }
